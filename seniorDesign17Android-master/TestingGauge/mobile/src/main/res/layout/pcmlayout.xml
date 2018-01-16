@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rsb="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/PCMDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:text="Stimuli Duration"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/PCMDurationDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp"
+            android:text="12 Seconds"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+            />
+
+    </LinearLayout>
+
+    <!--
+    <org.florescu.android.rangeseekbar.RangeSeekBar
+        android:id="@+id/PCMDurationSeekbar"
+        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:layout_gravity="center"
+        rsb:activateOnDefaultValues="true"
+        rsb:activeColor="@color/colorPrimaryDark"
+        rsb:barHeight="3dp"
+        rsb:defaultColor="@color/colorPrimaryDark"
+        rsb:showLabels="false"
+        rsb:singleThumb="true"
+        rsb:absoluteMaxValue="30"
+        rsb:absoluteMinValue="0"
+        rsb:textAboveThumbsColor="@color/colorPrimaryDark"
+        rsb:thumbNormal="@mipmap/thumb"
+        rsb:thumbPressed="@mipmap/thumb"
+        android:layout_weight=".15" />
+        -->
+
+    <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+        android:id="@+id/PCMDurationSeekbar"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="48dp"
+        rsb:dsb_indicatorColor="#69BE28"
+        rsb:dsb_progressColor="#69BE28"
+        rsb:dsb_rippleColor="#69BE28"
+        rsb:dsb_thumbSize="24dp"
+        rsb:dsb_trackHeight="4dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/PCMPulseWidth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="Pulse Width"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/PCMPulseWidthDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:text="100  μs"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+             />
+
+    </LinearLayout>
+
+    <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+        android:id="@+id/PCMPulseWidthSeekbar"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="56dp"
+        rsb:dsb_indicatorColor="#69BE28"
+        rsb:dsb_progressColor="#69BE28"
+        rsb:dsb_rippleColor="#69BE28"
+        rsb:dsb_thumbSize="24dp"
+        rsb:dsb_trackHeight="4dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/PCMAmplitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="Amplitude"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/PCMAmplitudeDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:text=".5  mA"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+             />
+
+    </LinearLayout>
+
+    <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+        android:id="@+id/PCMAmplitudeSeekbar"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="56dp"
+        rsb:dsb_indicatorColor="#69BE28"
+        rsb:dsb_progressColor="#69BE28"
+        rsb:dsb_rippleColor="#69BE28"
+        rsb:dsb_thumbSize="24dp"
+        rsb:dsb_trackHeight="4dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/PCMFrequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="Frequency"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/PCMFrequencyDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:text="55  Hz"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+             />
+
+    </LinearLayout>
+
+    <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+        android:id="@+id/PCMFrequencySeekbar"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="64dp"
+        android:layout_marginTop="56dp"
+        rsb:dsb_indicatorColor="#69BE28"
+        rsb:dsb_progressColor="#69BE28"
+        rsb:dsb_rippleColor="#69BE28"
+        rsb:dsb_thumbSize="24dp"
+        rsb:dsb_trackHeight="4dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+</LinearLayout>
