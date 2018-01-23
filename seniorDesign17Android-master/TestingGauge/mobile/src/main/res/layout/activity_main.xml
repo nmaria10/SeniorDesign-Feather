@@ -444,7 +444,7 @@
                     android:paddingBottom="25dp"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#ffffff"
                     android:textSize="30dp"
                     android:textStyle="bold" />
 
@@ -458,7 +458,7 @@
                     android:paddingBottom="25dp"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#ffffff"
                     android:textSize="30dp"
                     android:textStyle="bold" />
 
@@ -477,7 +477,7 @@
                         android:layoutDirection="rtl"
                         android:max="100"
                         android:progress="45"
-                        android:progressTint="#303030"
+                        android:progressTint="#000000"
                         android:thumb="@drawable/seek_arc_control_selector" />
 
                     <SeekBar
@@ -488,7 +488,7 @@
                         android:layout_weight="1"
                         android:max="100"
                         android:progress="45"
-                        android:progressTint="#303030"
+                        android:progressTint="#000000"
                         android:thumb="@drawable/seek_arc_control_selector" />
                 </LinearLayout>
 

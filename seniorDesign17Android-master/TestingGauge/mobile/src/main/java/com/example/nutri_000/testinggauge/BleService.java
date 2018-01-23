@@ -209,6 +209,7 @@ public class BleService extends Service {
                         }
                     }
                     //if find Adafruit Bluefruit Device
+                    // put break here and check to see what searchingFeather is equal to?
                     /*if(deviceName.equals("Adafruit Bluefruit LE")) {
                         for (int i = 0; i < 4; i++) {
                             if(device.getDevice().getAddress().toString().equals(approvedDevices[i])) {
