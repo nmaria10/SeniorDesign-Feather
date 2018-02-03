@@ -575,6 +575,23 @@
         custom:borderWidth="0dp"
         custom:fabSize="normal" />
 
+    <!-- new button for UART stuff -->
+    <ImageButton
+        android:id="@+id/uartButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/rightarrow"
+        android:onClick="startU"
+        android:visibility="visible"
+        app:backgroundTint="#ffffff"
+        custom:borderWidth="0dp"
+        custom:fabSize="normal" />
+    new button for UART stuff -->
+
     <Button
         android:id="@+id/scanButton"
         android:layout_width="60dp"

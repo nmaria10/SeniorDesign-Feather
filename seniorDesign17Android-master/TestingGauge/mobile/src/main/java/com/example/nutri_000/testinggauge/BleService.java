@@ -291,6 +291,9 @@ public class BleService extends Service {
                 sendBroadcast(intent);
 
             }
+            if (gatt == featherGatt){
+                Log.v(TAG, "notification received from feather");
+            }
         }
 
         @Override
@@ -382,23 +385,23 @@ public class BleService extends Service {
                         sendBroadcast(intent);
                     }
                     //feather bluetooth info
-                    if(characteristics.get(i).getUuid().toString().equals("00001530-1212-efde-1523-785fef13d123")){
-                        NRF_CHARACTERISTIC = service.getCharacteristic(UUID.fromString("00001530-1212-efde-1523-785fef13d123"));
-                        gatt.setCharacteristicNotification(NRF_CHARACTERISTIC,true);
-                        UUID dUUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"); //Client Characteristic UUID
+                    if(characteristics.get(i).getUuid().toString().equals("00002a29-0000-1000-8000-00805f9b34fb")){
+                        NRF_CHARACTERISTIC = service.getCharacteristic(UUID.fromString("00002a29-0000-1000-8000-00805f9b34fb"));
+                    /*    gatt.setCharacteristicNotification(NRF_CHARACTERISTIC,true);
+                        UUID dUUID = UUID.fromString("00002a29-0000-1000-8000-00805f9b34fb"); //Client Characteristic UUID
                         BluetoothGattDescriptor notifyDescriptor = NRF_CHARACTERISTIC.getDescriptor(dUUID);
                         notifyDescriptor.setValue(ENABLE_NOTIFICATION_VALUE);
-                        boolean b = gatt.writeDescriptor(notifyDescriptor);
+                        boolean b = gatt.writeDescriptor(notifyDescriptor); */
                         scanner.stopScan(mScanCallback);
                         scanning = false;
                         String bleEvent = "sensorConnected";
                         intent.putExtra("bleEvent", bleEvent);
                         intent.putExtra("gatt", "undetermined");
-                        if(gatt == featherGatt){
+                      //  if(gatt == featherGatt){
                             intent.putExtra("gatt", "feather");
-                        }
+                      //  }
                         sendBroadcast(intent);
-                        Log.v(TAG, String.valueOf(b));
+                   //     Log.v(TAG, String.valueOf(b));
                     }
                 }
             }
