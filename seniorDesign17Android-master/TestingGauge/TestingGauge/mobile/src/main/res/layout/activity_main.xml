@@ -29,7 +29,7 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:gravity="center">
-<!--
+
         <ImageView
             android:id="@+id/fireflyPic"
             android:layout_width="match_parent"
@@ -43,21 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             app:srcCompat ="@drawable/repairlogo" />
--->
+
         <TextView
             android:id="@+id/SensorStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="Select a sensor to connect"
-            android:textColor="#ffffff"
-            android:textSize="20dp"/>
-            <!-- android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@id/fireflyPic"
             android:layout_marginBottom="5dp"
@@ -66,7 +56,7 @@
             android:gravity="center_horizontal"
             android:text="Select a sensor to connect"
             android:textColor="#ffffff"
-            android:textSize="20dp" /> -->
+            android:textSize="20dp" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -75,7 +65,7 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@id/SensorStatus"
             android:orientation="vertical"
-            android:weightSum="4">
+            android:weightSum="3">
 
             <RelativeLayout
                 android:id="@+id/relativeHip"
@@ -417,119 +407,6 @@
 
             </RelativeLayout>
 
-            <!--feather -->
-            <RelativeLayout
-                android:id="@+id/relativeFeather"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#404040">
-
-                <ImageButton
-                    android:id="@+id/featherButton"
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/featherwhite"
-                    android:onClick="connectFeather" />
-
-                <TextView
-                    android:id="@+id/bottomAngle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toRightOf="@+id/featherButton"
-                    android:layout_weight="0.09"
-                    android:paddingBottom="25dp"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textColor="#ffffff"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/bottomAngleL"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toLeftOf="@+id/featherButton"
-                    android:layout_weight="0.09"
-                    android:paddingBottom="25dp"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textColor="#ffffff"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/featherButton"
-                    android:orientation="horizontal">
-
-                    <SeekBar
-                        android:id="@+id/seekBarBottomLeft"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/featherButton"
-                        android:layout_weight="1"
-                        android:layoutDirection="rtl"
-                        android:max="100"
-                        android:progress="45"
-                        android:progressTint="#000000"
-                        android:thumb="@drawable/seek_arc_control_selector" />
-
-                    <SeekBar
-                        android:id="@+id/seekBarBottomRight"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/featherButton"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:progress="45"
-                        android:progressTint="#000000"
-                        android:thumb="@drawable/seek_arc_control_selector" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/featherButton"
-                    android:orientation="horizontal">
-
-                    <ProgressBar
-                        android:id="@+id/progressBarBottomLeft"
-                        style="@android:style/Widget.Material.ProgressBar.Horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="33dp"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:paddingRight="5dp"
-                        android:progress="0"
-                        android:progressTint="#69BE28"
-                        android:visibility="visible"
-                        tools:visibility="visible" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBarBottomRight"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:paddingRight="5dp"
-                        android:progress="0"
-                        android:progressTint="#69BE28"
-                        android:visibility="visible"
-                        tools:visibility="visible" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <!-- end feather -->
-
             <ImageView
                 android:id="@+id/txbdc"
                 android:layout_width="match_parent"
@@ -575,9 +452,8 @@
         custom:borderWidth="0dp"
         custom:fabSize="normal" />
 
-    <!-- new button for UART stuff -->
     <ImageButton
-        android:id="@+id/uButton"
+        android:id="@+id/uartButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="bottom|right"
@@ -585,12 +461,11 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="35dp"
         android:background="@drawable/rightarrow"
-        android:onClick="startU"
+        android:onClick="startUart"
         android:visibility="visible"
         app:backgroundTint="#ffffff"
         custom:borderWidth="0dp"
         custom:fabSize="normal" />
-    new button for UART stuff -->
 
     <Button
         android:id="@+id/scanButton"
