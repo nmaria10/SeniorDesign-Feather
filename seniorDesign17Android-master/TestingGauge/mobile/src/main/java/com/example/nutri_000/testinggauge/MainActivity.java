@@ -4,7 +4,9 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -13,15 +15,11 @@ import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.RemoteException;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.text.DateFormat;
@@ -44,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> hipData = new ArrayList<String>();
     ArrayList<String>  kneeData= new ArrayList<String>();
     ArrayList<String>  ankleData= new ArrayList<String>();
+    ArrayList<String>  handData= new ArrayList<String>();
     int hipCount = 0;
     int kneeCount = 0;
     int ankleCount = 0;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     int footClickCount = 0;
     int kneeClickCount = 0;
     int hipClickCount = 0;
-    int featherClickCount = 0; //feather32u4
+    int handClickCount = 0;
     boolean fireflyFound = false;
 
 
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     SensorUI hipUI;
     SensorUI kneeUI;
     SensorUI ankleUI;
-    SensorUI featherUI;  // feather
+    SensorUI handUI;
 
     private static Context context;
 
@@ -110,36 +109,34 @@ public class MainActivity extends AppCompatActivity {
                     R.id.topAngle, R.id.topAngleL,R.id.relativeHip, this );
             hipUI.leftPB.setRotation(180);
 
-            hipUI.green = R.drawable.hipgreen;
-            hipUI.yellow = R.drawable.hipyellow;
-            hipUI.white = R.drawable.hipwhite;
+            hipUI.green = R.drawable.chestgreen;
+            hipUI.yellow = R.drawable.chestyellow;
+            hipUI.white = R.drawable.chestwhite;
 
 
             kneeUI = new SensorUI(R.id.lowerLegButton, R.id.progressBarMidRight, R.id.progressBarMidLeft, R.id.seekBarMidRight,R.id.seekBarMidLeft,
                     R.id.midAngle, R.id.midAngleL, R.id.relativeKnee, this);
             kneeUI.leftPB.setRotation(180);
 
-            kneeUI.green = R.drawable.kneegreen;
-            kneeUI.yellow = R.drawable.kneeyellow;
-            kneeUI.white = R.drawable.kneewhite;
+            kneeUI.green = R.drawable.armgreen;
+            kneeUI.yellow = R.drawable.armyellow;
+            kneeUI.white = R.drawable.armwhite;
 
             ankleUI = new SensorUI(R.id.footButton,R.id.progressBarBottomRight,R.id.progressBarBottomLeft,R.id.seekBarBottomRight,R.id.seekBarBottomLeft,
                     R.id.bottomAngle,R.id.bottomAngleL, R.id.relativeAnkle, this);
             ankleUI.leftPB.setRotation(180);
 
-            ankleUI.green = R.drawable.anklegreen;
-            ankleUI.yellow = R.drawable.ankleyellow;
-            ankleUI.white = R.drawable.anklewhite;
+            ankleUI.green = R.drawable.wristgreen;
+            ankleUI.yellow = R.drawable.wristyellow;
+            ankleUI.white = R.drawable.wristwhite;
 
-            //feather
-            featherUI = new SensorUI(R.id.featherButton,R.id.progressBarBottomRight,R.id.progressBarBottomLeft,R.id.seekBarBottomRight,R.id.seekBarBottomLeft,
-                    R.id.bottomAngle,R.id.bottomAngleL, R.id.relativeFeather, this);
-            featherUI.leftPB.setRotation(180);
+            handUI = new SensorUI(R.id.handButton,R.id.progressBarBottom2Right,R.id.progressBarBottom2Left,R.id.seekBarBottom2Right,R.id.seekBarBottom2Left,
+                    R.id.bottomAngle2,R.id.bottomAngleL2, R.id.relativeHand, this);
+            handUI.leftPB.setRotation(180);
 
-            featherUI.green = R.drawable.feathergreen;
-            featherUI.yellow = R.drawable.featheryellow;
-            featherUI.white = R.drawable.featherwhite;
-            //end feather
+            handUI.green = R.drawable.handgreen;
+            handUI.yellow = R.drawable.handyellow;
+            handUI.white = R.drawable.handwhite;
 
             stimButton = (FloatingActionButton) findViewById(R.id.stim_buton);
             sensorStatus = (TextView) findViewById(R.id.SensorStatus);
@@ -195,10 +192,10 @@ public class MainActivity extends AppCompatActivity {
             bleService.ankleGatt.close();
             bleService.ankleGatt = null;
         }
-        if(bleService.featherGatt != null) {
-            bleService.featherGatt.disconnect();
-            bleService.featherGatt.close();
-            bleService.featherGatt = null;
+        if(bleService.handGatt != null) {
+            bleService.handGatt.disconnect();
+            bleService.handGatt.close();
+            bleService.handGatt = null;
         }
         Log.v("onDestroy", "DESTROYED");
     }
@@ -209,9 +206,7 @@ public class MainActivity extends AppCompatActivity {
         writeFileAtStop("hip = ", hipUI);
         writeFileAtStop("knee = ", kneeUI);
         writeFileAtStop("ankle = ", ankleUI);
-        //feather
-        writeFileAtStop("feather = ", featherUI);
-        //end feather
+        writeFileAtStop("ankle = ", handUI);
         Log.v("onStop", "STOPPED");
     }
     @Override
@@ -250,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             bleService.searchingHip = false;
             bleService.searchingKnee = false;
             bleService.searchingAnkle = false;
-            bleService.searchingFeather = false;
+            bleService.searchingHand = false;
             bleService.searchingPCM = true;
             setSensorStatus("Searching for PCM");
             bleService.scanner.startScan(bleService.mScanCallback);
@@ -339,6 +334,12 @@ public class MainActivity extends AppCompatActivity {
                         ankleData.add(Long.toString(System.currentTimeMillis()) + "\n");
                         //ankleCount++;
                     }
+                    if(sensor == handUI){
+                        handData.add(Integer.toString(value)+ " ");
+                        //ankleCount++;
+                        handData.add(Long.toString(System.currentTimeMillis()) + "\n");
+                        //ankleCount++;
+                    }
                     //writeFile(value, sensor);
                 }
                 else if(value > 0 & value < 90 ){
@@ -360,6 +361,12 @@ public class MainActivity extends AppCompatActivity {
                         ankleData.add(Integer.toString(value)+ " ");
                         //ankleCount++;
                         ankleData.add(Long.toString(System.currentTimeMillis()) + "\n");
+                        //ankleCount++;
+                    }
+                    if(sensor == handUI){
+                        handData.add(Integer.toString(value)+ " ");
+                        //ankleCount++;
+                        handData.add(Long.toString(System.currentTimeMillis()) + "\n");
                         //ankleCount++;
                     }
                     //writeFile(value, sensor);
@@ -451,10 +458,10 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             setSensorStatus("Scan Timeout");
-                            if(bleService.hipGatt == null){hipUI.connect.setBackgroundResource(R.drawable.hipwhite);}
-                            if(bleService.kneeGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.kneewhite);}
-                            if(bleService.ankleGatt ==  null){ankleUI.connect.setBackgroundResource(R.drawable.anklewhite);}
-                            if(bleService.featherGatt ==  null){featherUI.connect.setBackgroundResource(R.drawable.featherwhite);}
+                            if(bleService.hipGatt == null){hipUI.connect.setBackgroundResource(R.drawable.chestwhite);}
+                            if(bleService.kneeGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.armwhite);}
+                            if(bleService.ankleGatt ==  null){ankleUI.connect.setBackgroundResource(R.drawable.wristwhite);}
+                            if(bleService.handGatt ==  null){handUI.connect.setBackgroundResource(R.drawable.handwhite);}
                         }
                     });
                 }
@@ -480,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
             footClickCount = 0;
             kneeClickCount = 0;
             hipClickCount = 0;
-            featherClickCount = 0;
+            handClickCount = 0;
         }
     };
 
@@ -490,16 +497,16 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     setSensorStatus("Searching");
-                    hipUI.connect.setBackgroundResource(R.drawable.hipyellow);
-                    if(bleService.kneeGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.kneewhite);}
-                    if(bleService.ankleGatt ==  null){ankleUI.connect.setBackgroundResource(R.drawable.anklewhite);}
-                    if(bleService.featherGatt ==  null){featherUI.connect.setBackgroundResource(R.drawable.featherwhite);}
+                    hipUI.connect.setBackgroundResource(R.drawable.chestyellow);
+                    if(bleService.kneeGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.armwhite);}
+                    if(bleService.ankleGatt ==  null){ankleUI.connect.setBackgroundResource(R.drawable.wristwhite);}
+                    if(bleService.handGatt ==  null){handUI.connect.setBackgroundResource(R.drawable.handwhite);}
                 }
             });
             bleService.searchingHip = true;
             bleService.searchingKnee = false;
             bleService.searchingAnkle = false;
-            bleService.searchingFeather = false;
+            bleService.searchingHand = false;
             bleService.searchingPCM = false;
             bleService.scanner.startScan(bleService.mScanCallback);
             scanCount = scanCount + 20;
@@ -517,7 +524,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        hipUI.connect.setBackgroundResource(R.drawable.hipwhite);
+                        hipUI.connect.setBackgroundResource(R.drawable.chestwhite);
                         hipUI.leftTV.setVisibility(View.INVISIBLE);
                         hipUI.rightTV.setVisibility(View.INVISIBLE);
                     }
@@ -532,17 +539,17 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     setSensorStatus("Searching");
-                    kneeUI.connect.setBackgroundResource(R.drawable.kneeyellow);
-                    if(bleService.ankleGatt ==  null){ankleUI.connect.setBackgroundResource(R.drawable.anklewhite);}
-                    if(bleService.hipGatt ==  null){hipUI.connect.setBackgroundResource(R.drawable.hipwhite);}
-                    if(bleService.featherGatt ==  null){featherUI.connect.setBackgroundResource(R.drawable.featherwhite);}
+                    kneeUI.connect.setBackgroundResource(R.drawable.armyellow);
+                    if(bleService.ankleGatt ==  null){ankleUI.connect.setBackgroundResource(R.drawable.wristwhite);}
+                    if(bleService.hipGatt ==  null){hipUI.connect.setBackgroundResource(R.drawable.chestwhite);}
+                    if(bleService.handGatt ==  null){handUI.connect.setBackgroundResource(R.drawable.handwhite);}
                 }
             });
             bleService.searchingKnee = true;
             bleService.searchingHip = false;
             bleService.searchingAnkle = false;
+            bleService.searchingHand = false;
             bleService.searchingPCM = false;
-            bleService.searchingFeather = false;
             bleService.scanner.startScan(bleService.mScanCallback);
             scanCount = scanCount + 20;
             bleService.scanning = true;
@@ -559,7 +566,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        kneeUI.connect.setBackgroundResource(R.drawable.kneewhite);
+                        kneeUI.connect.setBackgroundResource(R.drawable.armwhite);
                         kneeUI.leftTV.setVisibility(View.INVISIBLE);
                         kneeUI.rightTV.setVisibility(View.INVISIBLE);
                     }
@@ -576,17 +583,17 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     setSensorStatus("Searching");
-                    ankleUI.connect.setBackgroundResource(R.drawable.ankleyellow);
-                    if(bleService.hipGatt ==  null){hipUI.connect.setBackgroundResource(R.drawable.hipwhite);}
-                    if(bleService.kneeGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.kneewhite);}
-                    if(bleService.featherGatt ==  null){featherUI.connect.setBackgroundResource(R.drawable.featherwhite);}
+                    ankleUI.connect.setBackgroundResource(R.drawable.wristyellow);
+                    if(bleService.hipGatt ==  null){hipUI.connect.setBackgroundResource(R.drawable.chestwhite);}
+                    if(bleService.kneeGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.armwhite);}
+                    if(bleService.handGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.handwhite);}
                 }
             });
             bleService.searchingHip = false;
             bleService.searchingKnee = false;
             bleService.searchingAnkle = true;
+            bleService.searchingHand = false;
             bleService.searchingPCM = false;
-            bleService.searchingFeather = false;
             bleService.scanner.startScan(bleService.mScanCallback);
             scanCount = scanCount + 20;
             bleService.scanning = true;
@@ -603,7 +610,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ankleUI.connect.setBackgroundResource(R.drawable.anklewhite);
+                        ankleUI.connect.setBackgroundResource(R.drawable.wristwhite);
                         ankleUI.leftTV.setVisibility(View.INVISIBLE);
                         ankleUI.rightTV.setVisibility(View.INVISIBLE);
                     }
@@ -613,25 +620,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    //CONNECT FEATHER
-
-    public void connectFeather(View v){
-        if(bleService.featherGatt == null) {
+    public void connectHand(View v){
+        if(bleService.handGatt == null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     setSensorStatus("Searching");
-                    featherUI.connect.setBackgroundResource(R.drawable.featheryellow);
-                    if(bleService.hipGatt ==  null){hipUI.connect.setBackgroundResource(R.drawable.hipwhite);}
-                    if(bleService.kneeGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.kneewhite);}
-                    if(bleService.ankleGatt ==  null){ankleUI.connect.setBackgroundResource(R.drawable.anklewhite);}
+                    handUI.connect.setBackgroundResource(R.drawable.handyellow);
+                    if(bleService.hipGatt ==  null){hipUI.connect.setBackgroundResource(R.drawable.chestwhite);}
+                    if(bleService.kneeGatt ==  null){kneeUI.connect.setBackgroundResource(R.drawable.armwhite);}
+                    if(bleService.ankleGatt ==  null){ankleUI.connect.setBackgroundResource(R.drawable.wristwhite);}
                 }
             });
             bleService.searchingHip = false;
             bleService.searchingKnee = false;
             bleService.searchingAnkle = false;
-            bleService.searchingFeather = true;
+            bleService.searchingHand = true;
             bleService.searchingPCM = false;
             bleService.scanner.startScan(bleService.mScanCallback);
             scanCount = scanCount + 20;
@@ -639,27 +643,25 @@ public class MainActivity extends AppCompatActivity {
             timerHandler.postDelayed(scanStop, 1000);
         }
         else{
-            featherClickCount++;
+            handClickCount++;
             timerHandler.postDelayed(doubleClick,500);
-            if(featherClickCount == 2){
-                bleService.featherGatt.disconnect();
-                bleService.featherGatt.close();
-                bleService.featherGatt = null;
+            if(handClickCount == 2){
+                bleService.handGatt.disconnect();
+                bleService.handGatt.close();
+                bleService.handGatt = null;
                 setSensorStatus("Sensor disconnected");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        featherUI.connect.setBackgroundResource(R.drawable.featherwhite);
-                        featherUI.leftTV.setVisibility(View.INVISIBLE);
-                        featherUI.rightTV.setVisibility(View.INVISIBLE);
+                        handUI.connect.setBackgroundResource(R.drawable.handwhite);
+                        handUI.leftTV.setVisibility(View.INVISIBLE);
+                        handUI.rightTV.setVisibility(View.INVISIBLE);
                     }
                 });
-                featherClickCount = 0;
+                handClickCount = 0;
             }
         }
     }
-    //end of feather code
-
 
     private BroadcastReceiver broadcastReceiver =  new BroadcastReceiver() {
         @Override
@@ -697,16 +699,16 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 }
-                if(extras.getString("gatt").equals("feather")){
-                    connectSensor(featherUI);
-                    featherUI.connect.setOnLongClickListener(new View.OnLongClickListener(){
+                if(extras.getString("gatt").equals("hand")){
+                    connectSensor(handUI);
+                    handUI.connect.setOnLongClickListener(new View.OnLongClickListener(){
                         @Override
                         public boolean onLongClick(View v){
-                            featherUI.calibrateSensor(featherUI);
+                            handUI.calibrateSensor(handUI);
                             return true;
                         }
                     });
-                } // end feather
+                }
                 if(extras.getString("gatt").equals("firefly")){
                     runOnUiThread(new Runnable() {
                         @Override
@@ -723,36 +725,28 @@ public class MainActivity extends AppCompatActivity {
                 Log.v("bleService", "connected message sent");
             }
             if(eventType.equals("sensorDisconnected")){
-                if(extras.getString("gatt").equals("hip") ){
+                if(extras.getString("gatt").equals("hip")){
                     onSensorDisconnected(hipUI);
                     if(bleService.hipGatt != null){
                         bleService.hipGatt.close();
                         bleService.hipGatt = null;
                     }
+
                 }
-                if(extras.getString("gatt").equals("knee") ){
+                if(extras.getString("gatt").equals("knee")){
                     onSensorDisconnected(kneeUI);
                     if(bleService.kneeGatt != null){
                         bleService.kneeGatt.close();
                         bleService.kneeGatt = null;
                     }
                 }
-                if(extras.getString("gatt").equals("ankle") ){
+                if(extras.getString("gatt").equals("ankle")){
                     onSensorDisconnected(ankleUI);
                     if(bleService.ankleGatt != null){
                         bleService.ankleGatt.close();
                         bleService.ankleGatt = null;
                     }
                 }
-                //feather
-                if(extras.getString("gatt").equals("feather") ){
-                    onSensorDisconnected(featherUI);
-                    if(bleService.featherGatt != null){
-                        bleService.featherGatt.close();
-                        bleService.featherGatt = null;
-                    }
-                }
-                //end feather
                 if(extras.getString("gatt").equals("firefly")){
                     setSensorStatus("PCM Disconnected");
                     if(bleService.fireflyGatt != null){
@@ -825,7 +819,7 @@ public class MainActivity extends AppCompatActivity {
         Log.v("BLUETOOTH", "DISCONNECTED");
     }
 
-    public void startU(View v){
+    public void startUart(View v) {
         Intent intent = new Intent(this, MainActivityUart.class);
         startActivity(intent);
     }
@@ -856,16 +850,6 @@ public class MainActivity extends AppCompatActivity {
             String string = "not connected";
             intent.putExtra("hipDeviceAddress", string);
         }
-        //feather
-        if(bleService.featherGatt != null){
-            String featherDeviceAddress = bleService.featherGatt.getDevice().getAddress().toString();
-            intent.putExtra("featherDeviceAddress", featherDeviceAddress);
-        }
-        else{
-            String string = "not connected";
-            intent.putExtra("featherDeviceAddress", string);
-        }
-        //end feather
         startActivity(intent);
     }
     public void findGaugeValue(final SensorUI sensor, float gyroX){

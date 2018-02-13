@@ -93,18 +93,12 @@ public class DetailsActivity extends AppCompatActivity {
         TextView kneeAddress = (TextView) findViewById(R.id.kneeAddress);
         String ankleDevice = deviceAddresses.getString("ankleDeviceAddress");
         TextView ankleAddress = (TextView) findViewById(R.id.ankleAddress);
-        //feather
-        String featherDevice = deviceAddresses.getString("featherDeviceAddress");
-        TextView featherAddress = (TextView) findViewById(R.id.featherAddress);
-        //end feather
         hipDevice = "hip: " + hipDevice;
         kneeDevice = "knee: " + kneeDevice;
         ankleDevice = "ankle: " + ankleDevice;
-        featherDevice = "feather: " + featherDevice;
         hipAddress.setText(hipDevice);
         kneeAddress.setText(kneeDevice);
         ankleAddress.setText(ankleDevice);
-        featherAddress.setText(featherDevice); //feather
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("newDevice"));
         String defaultValue = "000000";
 

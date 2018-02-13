@@ -29,8 +29,6 @@
             android:text="search for devices"
             android:onClick="scanClicked"/>
 
-
-
         <TextView
             android:id="@+id/connectedDeviceHeader"
             android:layout_width="match_parent"
@@ -65,16 +63,6 @@
 
         <TextView
             android:id="@+id/ankleAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp" />
-
-        <TextView
-            android:id="@+id/featherAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"

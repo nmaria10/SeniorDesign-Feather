@@ -1,27 +1,23 @@
 package com.example.nutri_000.testinggauge;
 
-//sample code from Adafruit Adroid BLE UART master found @:
-// https://github.com/adafruit/Adafruit_Android_BLE_UART
-//package com.adafruit.bleuart;
-
 import android.bluetooth.BluetoothAdapter;
-        import android.bluetooth.BluetoothDevice;
-        import android.bluetooth.BluetoothGatt;
-        import android.bluetooth.BluetoothGattCallback;
-        import android.bluetooth.BluetoothGattCharacteristic;
-        import android.bluetooth.BluetoothGattDescriptor;
-        import android.content.Context;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.content.Context;
 
-        import java.nio.ByteBuffer;
-        import java.nio.ByteOrder;
-        import java.nio.charset.Charset;
-        import java.util.ArrayList;
-        import java.util.List;
-        import java.util.Queue;
-        import java.util.UUID;
-        import java.util.WeakHashMap;
-        import java.lang.String;
-        import java.util.concurrent.ConcurrentLinkedQueue;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.UUID;
+import java.util.WeakHashMap;
+import java.lang.String;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class BluetoothLeUart extends BluetoothGattCallback implements BluetoothAdapter.LeScanCallback {
 
@@ -426,4 +422,3 @@ public class BluetoothLeUart extends BluetoothGattCallback implements BluetoothA
         return uuids;
     }
 }
-

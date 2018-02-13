@@ -12,19 +12,13 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Binder;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.util.Log;
 
 import java.util.List;
@@ -36,11 +30,9 @@ import static com.example.nutri_000.testinggauge.MainActivity.getAppContext;
 public class BleService extends Service {
     private BluetoothAdapter adapter;
     public BluetoothLeScanner scanner;
-    public boolean searchingHip, searchingKnee, searchingAnkle = false;
+    public boolean searchingHip, searchingKnee, searchingAnkle, searchingHand = false;
     public boolean searchingPCM = true;
-    public boolean searchingFeather = false;
-    BluetoothGatt hipGatt, kneeGatt, ankleGatt, fireflyGatt;
-    BluetoothGatt featherGatt;
+    BluetoothGatt hipGatt, kneeGatt, ankleGatt, fireflyGatt, handGatt;
     private int connected = 2;
     private int connecting = 1;
     private int disconnected = 0;
@@ -82,7 +74,7 @@ public class BleService extends Service {
 
         //set up saved devices for future connections
         sharedPreferences = this.getSharedPreferences("savedDevices", Context.MODE_PRIVATE);
-        approvedDevices[0] = sharedPreferences.getString("device1","FE:21:EB:6D:60:79");
+        approvedDevices[0] = sharedPreferences.getString("device1","000000");
         approvedDevices[1] = sharedPreferences.getString("device2","000000");
         approvedDevices[2] = sharedPreferences.getString("device3","000000");
     }
@@ -157,7 +149,7 @@ public class BleService extends Service {
             deviceName = device.getDevice().getName();
             if(searchingFromDetails){
                 if(deviceName != null){
-                    if(deviceName.equals("JohnCougarMellenc") | (deviceName.equals("Adafruit Bluefruit LE"))){
+                    if(deviceName.equals("JohnCougarMellenc")){
                         boolean newDevice = true;
                         for(int i = 0; i<shockclockCount; i++){
                             if(device.getDevice().getAddress().equals(deviceIDs[i])){
@@ -175,7 +167,7 @@ public class BleService extends Service {
             }
             else{
                 if(deviceName != null){
-                    if(deviceName.equals("JohnCougarMellenc") | deviceName.equals("Adafruit Bluefruit LE")){
+                    if(deviceName.equals("JohnCougarMellenc")){
                         for(int i = 0; i<4; i++){
                             if(device.getDevice().getAddress().toString().equals(approvedDevices[i])){
                                 String bleEvent = "scan";
@@ -199,30 +191,10 @@ public class BleService extends Service {
                                     scanning = false;
                                     ankleGatt = sensor.connectGatt(getAppContext(),false,bleGattCallback);
                                 }
-                                else if(searchingFeather){
-                                    BluetoothDevice sensor = device.getDevice();
-                                    scanner.stopScan(mScanCallback);
-                                    scanning = false;
-                                    featherGatt = sensor.connectGatt(getAppContext(),false,bleGattCallback);
-                                }
                             }
                         }
-                    }
-                    //if find Adafruit Bluefruit Device
-                    // put break here and check to see what searchingFeather is equal to?
-                    /*if(deviceName.equals("Adafruit Bluefruit LE")) {
-                        for (int i = 0; i < 4; i++) {
-                            if(device.getDevice().getAddress().toString().equals(approvedDevices[i])) {
-                                if (searchingFeather) {
-                                    BluetoothDevice sensor = device.getDevice();
-                                    scanner.stopScan(mScanCallback);
-                                    scanning = false;
-                                    featherGatt = sensor.connectGatt(getAppContext(), false, bleGattCallback);
-                                }
-                            }
-                        }
-                    }*/
 
+                    }
                     //if(device.getDevice().getAddress().equals("A0:E6:F8:BF:E6:04")){
                     if(deviceName.equals("FireflyPCM")){
                         if(searchingPCM){
@@ -232,7 +204,6 @@ public class BleService extends Service {
                             fireflyGatt = sensor.connectGatt(getAppContext(),false,bleGattCallback);
                         }
                     }
-
                 }
 
             }
@@ -291,9 +262,6 @@ public class BleService extends Service {
                 sendBroadcast(intent);
 
             }
-            if (gatt == featherGatt){
-                Log.v(TAG, "notification received from feather");
-            }
         }
 
         @Override
@@ -313,10 +281,6 @@ public class BleService extends Service {
                 else if(gatt.equals(fireflyGatt)){
                     intent.putExtra("gatt","firefly");
                     fireflyFound = false;
-                }
-                //feather
-                else if(gatt.equals(featherGatt)){
-                    intent.putExtra("gatt","feather");
                 }
                 else{
                     intent.putExtra("gatt", "unknown");
@@ -383,25 +347,6 @@ public class BleService extends Service {
                         intent.putExtra("bleEvent", bleEvent);
                         intent.putExtra("gatt","firefly");
                         sendBroadcast(intent);
-                    }
-                    //feather bluetooth info
-                    if(characteristics.get(i).getUuid().toString().equals("00002a29-0000-1000-8000-00805f9b34fb")){
-                        NRF_CHARACTERISTIC = service.getCharacteristic(UUID.fromString("00002a29-0000-1000-8000-00805f9b34fb"));
-                    /*    gatt.setCharacteristicNotification(NRF_CHARACTERISTIC,true);
-                        UUID dUUID = UUID.fromString("00002a29-0000-1000-8000-00805f9b34fb"); //Client Characteristic UUID
-                        BluetoothGattDescriptor notifyDescriptor = NRF_CHARACTERISTIC.getDescriptor(dUUID);
-                        notifyDescriptor.setValue(ENABLE_NOTIFICATION_VALUE);
-                        boolean b = gatt.writeDescriptor(notifyDescriptor); */
-                        scanner.stopScan(mScanCallback);
-                        scanning = false;
-                        String bleEvent = "sensorConnected";
-                        intent.putExtra("bleEvent", bleEvent);
-                        intent.putExtra("gatt", "undetermined");
-                      //  if(gatt == featherGatt){
-                            intent.putExtra("gatt", "feather");
-                      //  }
-                        sendBroadcast(intent);
-                   //     Log.v(TAG, String.valueOf(b));
                     }
                 }
             }
